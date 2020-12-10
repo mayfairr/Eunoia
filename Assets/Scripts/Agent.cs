@@ -87,6 +87,6 @@ public class Agent : MonoBehaviour
 
     public void calcFitness()
     {
-        neuralNetwork.setFitness(1000/(this.gameObject.transform.position - target.transform.position).magnitude);
+                neuralNetwork.setFitness(1000/(this.gameObject.transform.position - target.transform.position).magnitude);
     }
 }
