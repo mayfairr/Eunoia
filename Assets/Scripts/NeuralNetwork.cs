@@ -85,7 +85,7 @@ public class NeuralNetwork : MonoBehaviour
         this.weights = weights.ToArray();
     }
 
-    public void feedForward(float[] input)
+    public float[] feedForward(float[] input)
     {
         //Dump input to first layer;
         for(int i = 0; i < input.Length; i++)
@@ -111,6 +111,7 @@ public class NeuralNetwork : MonoBehaviour
 
             }
         }
+        return nodes[nodes.Length - 1];
     }
 
     //Mutate Gene
