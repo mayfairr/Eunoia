@@ -75,6 +75,7 @@ public class Agent : MonoBehaviour
         this.gameObject.GetComponent<Rigidbody>().MoveRotation(this.gameObject.transform.rotation * deltaQuaternion);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
     public void OnCollisionEnter(Collision collision)
     {
 
@@ -88,6 +89,8 @@ public class Agent : MonoBehaviour
     {
         neuralNetwork.setFitness(1000/(this.gameObject.transform.position - target.transform.position).magnitude);
     }
+=======
+>>>>>>> parent of 63ef37a (Genetic Algorithm)
 =======
 >>>>>>> parent of 63ef37a (Genetic Algorithm)
 }
