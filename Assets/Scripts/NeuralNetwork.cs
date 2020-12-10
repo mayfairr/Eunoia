@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class NeuralNetwork : MonoBehaviour
+public class NeuralNetwork : IComparable<NeuralNetwork>
 {
     private int[] layers; //Overall structure of network
     private float[][] nodes; //value at each node in each layer
@@ -19,7 +19,8 @@ public class NeuralNetwork : MonoBehaviour
         {
             this.layers[i] = structure[i];
         }
-
+        createNodes();
+        createWeights();
     }
 
     public NeuralNetwork(NeuralNetwork copyNetwork)
@@ -103,7 +104,7 @@ public class NeuralNetwork : MonoBehaviour
 
                 for(int k = 0; k < this.nodes[i - 1].Length; k++)
                 {
-                    nodes[i][j] += nodes[i - 1][k] * weights[i - 1][j][k]; 
+                    sum += nodes[i - 1][k] * weights[i - 1][j][k]; 
                 }
 
                 // Range [-1, 1] hyperbolic tanget activation
@@ -173,5 +174,17 @@ public class NeuralNetwork : MonoBehaviour
     public float getFitness()
     {
         return this.fitness;
+    }
+
+    public int CompareTo(NeuralNetwork other)
+    {
+        if (other == null) return 1;
+
+        if (fitness > other.fitness)
+            return 1;
+        else if (fitness < other.fitness)
+            return -1;
+        else
+            return 0;
     }
 }
