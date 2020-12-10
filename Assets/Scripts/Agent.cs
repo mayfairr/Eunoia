@@ -9,10 +9,8 @@ public class Agent : MonoBehaviour
     public Vector3 Origin;
 
 
-    public NeuralNetwork neuralNetwork;
+    private NeuralNetwork neuralNetwork;
     private float[] input = new float[4];
-
-    public bool hasCollided = false;
 
     public void Start()
     { 
@@ -28,12 +26,16 @@ public class Agent : MonoBehaviour
         this.gameObject.transform.name = "Agent";
         this.gameObject.transform.tag = "Agent";
 
-        print(this.neuralNetwork.getFitness());
+        //Neural Network
+        int[] structure = new int[4] { 4, 4, 4, 1 };
+        this.neuralNetwork = new NeuralNetwork(structure);
 
     }
 
     private void Update()
     {
+        this.terminalVelocity();
+        this.rotate(Random.Range(-1f, 1f));
         this.computate();
     }
         
@@ -44,31 +46,27 @@ public class Agent : MonoBehaviour
 
     private void computate()
     {
-        if (!hasCollided)
-        {
-            this.terminalVelocity();
-            //RaycastDirections
-            Vector3[] directionList = new Vector3[4];
-            directionList[0] = Vector3.forward;
-            directionList[1] = Vector3.left;
-            directionList[2] = Vector3.right;
-            directionList[3] = Vector3.back;
+        //RaycastDirections
+        Vector3[] directionList = new Vector3[4];
+        directionList[0] = Vector3.forward;
+        directionList[1] = Vector3.left;
+        directionList[2] = Vector3.right;
+        directionList[3] = Vector3.back;
 
-            for (int i = 0; i < 4; i++)
+        for(int i = 0; i < 4; i++)
+        {
+            RaycastHit hit;
+            Ray ray = new Ray(transform.position, gameObject.transform.TransformDirection(directionList[i]));
+            Debug.DrawLine(this.gameObject.transform.position, this.gameObject.transform.position + 7.5f * gameObject.transform.TransformDirection(directionList[i]), Color.magenta);
+            if (Physics.Raycast(ray, out hit, 7.5f, ~(1 << 8)))
             {
-                RaycastHit hit;
-                Ray ray = new Ray(transform.position, gameObject.transform.TransformDirection(directionList[i]));
-                Debug.DrawLine(this.gameObject.transform.position, this.gameObject.transform.position + 7.5f * gameObject.transform.TransformDirection(directionList[i]), Color.magenta);
-                if (Physics.Raycast(ray, out hit, 7.5f, ~(1 << 8)))
-                {
-                    input[i] = 7.5f - (this.gameObject.transform.position - hit.point).magnitude / 10;
-                }
-                else { input[i] = 0f; }
+                input[i] = 7.5f - (this.gameObject.transform.position - hit.point).magnitude/10;
             }
-            float[] output = neuralNetwork.feedForward(input);
-            this.calcFitness();
-            this.rotate(output[0]);
+            else { input[i] = 0f; }
         }
+
+        float[] output = neuralNetwork.feedForward(input);
+        print(output[0]);
     }
     private void rotate(float _rotation)
     {
@@ -76,6 +74,7 @@ public class Agent : MonoBehaviour
         Quaternion deltaQuaternion = Quaternion.Euler(0, deltaRot, 0);
         this.gameObject.GetComponent<Rigidbody>().MoveRotation(this.gameObject.transform.rotation * deltaQuaternion);
     }
+<<<<<<< HEAD
     public void OnCollisionEnter(Collision collision)
     {
 
@@ -89,4 +88,6 @@ public class Agent : MonoBehaviour
     {
         neuralNetwork.setFitness(1000/(this.gameObject.transform.position - target.transform.position).magnitude);
     }
+=======
+>>>>>>> parent of 63ef37a (Genetic Algorithm)
 }
