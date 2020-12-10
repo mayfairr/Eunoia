@@ -23,7 +23,7 @@ public class NeuralNetwork : IComparable<NeuralNetwork>
         createWeights();
     }
 
-    public NeuralNetwork (NeuralNetwork copyNetwork)
+    public NeuralNetwork(NeuralNetwork copyNetwork)
     {
         this.layers = new int[copyNetwork.layers.Length];
         for (int i = 0; i < copyNetwork.layers.Length; i++)
@@ -118,41 +118,41 @@ public class NeuralNetwork : IComparable<NeuralNetwork>
     //Mutate Gene
     public void mutate()
     {
-        for(int i = 0; i <  weights.Length; i++)
+        for(int i = 0; i < layers.Length; i++)
         {
-            for(int j = 0; j < weights[i].Length; j++)
+            for(int j = 0; j < nodes[i].Length; j++)
             {
-                for(int k = 0; k < weights[i][j].Length; k++)
+                for(int k = 0; k <weights[i][j].Length; k++)
                 {
-                float weight = weights[i][j][k];
+                    float weight = weights[i][j][k];
 
-                //Mutate this weight by a probability set it to weight;
+                    //Mutate this weight by a probability set it to weight;
 
-                float probability = UnityEngine.Random.Range(0f, 1.0f);
+                    float probability = UnityEngine.Random.Range(0f, 1.0f);
 
-                if (probability < 0.01f)
-                {
-                    weight *= -1;
-                }
+                    if (probability < 0.2)
+                    {
+                        weight *= -1;
+                    }
 
-                if (probability >= 0.2 && probability < 0.04f)
-                {
-                    weight = UnityEngine.Random.Range(-0.5f, 0.5f);
-                }
+                    if (probability >= 0.2 && probability < 0.4)
+                    {
+                        weight = UnityEngine.Random.Range(-0.5f, 0.5f);
+                    }
 
-                if (probability >= 0.4 && probability < 0.07f)
-                {
-                    float factor = UnityEngine.Random.Range(0f, 1f) + 1f;
-                    weight *= factor;
-                }
+                    if (probability >= 0.4 && probability < 0.7)
+                    {
+                        float factor = UnityEngine.Random.Range(0f, 1f) + 1f;
+                        weight *= factor;
+                    }
 
-                if (probability >= 0.7 && probability <= 0.01f)
-                {
-                    float factor = UnityEngine.Random.Range(0f, 1f);
-                    weight *= factor;
-                }
+                    if (probability >= 0.7 && probability <= 1.0f)
+                    {
+                        float factor = UnityEngine.Random.Range(0f, 1f);
+                        weight *= factor;
+                    }
                         
-                weights[i][j][k] = weight;
+                    weights[i][j][k] = weight;
 
 
                 }
